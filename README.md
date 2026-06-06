@@ -1,179 +1,308 @@
-[Bulk Email Verifier](https://apify.com/codescraper/bulk-email-verifier?fpr=data)
+[Bulk Email Verifier](https://apify.com/solutionssmart/bulk-email-verifier?fpr=data)
 
-# 🔗 Bulk Email Verifier – Validate and Analyze Emails
+# 📧 Bulk Email Verifier
 
-This **Apify actor** verifies email addresses and returns detailed insights about deliverability, quality, sender info, domain info, risk, and breaches Using Abstract Api Email Reputation Api keys.
+Clean your email lists, reduce bounce risk, and protect your sender reputation.
 
-It supports single emails or lists of emails, validates MX/SMTP records, and provides a quality score for each address.
+Bulk Email Verifier is an Apify Actor for validating large lists of email addresses before you use them in cold outreach, CRM imports, or automation workflows. It checks each email with practical verification steps and returns structured results you can use immediately in your pipeline.
 
----
+It is built for affordable bulk verification without paid third-party verification APIs.
 
-## 🚀 What It Does
+## 🚀 Why use this actor?
 
-The actor processes each email address and returns a comprehensive profile including:
+If you run:
 
-- 📧 **Email Info:** Address, Deliverability Status, Score, and Role/Disposable flags
-- 🛡️ **Validation:** Format, SMTP, and MX record checks
-- 🏢 **Sender Info:** Provider, Organization, First/Last Name (if available)
-- 🌐 **Domain Info:** Domain age, registrar, registration/expiry dates, TLD risk
-- ⚠️ **Risk Assessment:** Address & domain risk status
-- 🔓 **Breaches:** Total breaches, dates, and breached domains
+- cold email campaigns
+- lead generation workflows
+- CRM imports
+- marketing automation
+- scraped lead pipelines
 
-## ⚡ It handles
+bad email data creates avoidable problems:
 
-- ✅ Bulk email lists or single addresses
-- 🔄 Automatic MX & SMTP verification
-- 🛡️ Risk & breach checks for informed decision making
+- higher bounce rates
+- weaker sender reputation
+- wasted credits in outreach tools
+- low-quality CRM records
+- more manual cleanup work
 
----
+Bulk Email Verifier helps you clean the list before sending, importing, or syncing it elsewhere.
 
-## 🔑 Using Your Own Abstract API Key (Optional)
+## ✅ What this actor checks
 
-providing your own API key allows higher request limits:
+Each email goes through several validation steps:
 
-- Go to Abstract API Email Reputation: [https://app.abstractapi.com/api/email-reputation/tester](https://app.abstractapi.com/api/email-reputation/tester)
-- Sign up for a free account or log in if you already have one.
-- Your key will be auto generated check section email-reputation. make sure you are at this link
+- Syntax validation: checks whether the email format is valid
+- DNS / MX validation: checks whether the domain can receive email
+- Disposable email detection: flags temporary or throwaway email providers
+- Role account detection: flags generic inboxes like `info@`, `sales@`, or `admin@`
+- Free provider signal: marks addresses from providers like Gmail or Yahoo as a separate signal
 
-[https://app.abstractapi.com/api/email-reputation/tester](https://app.abstractapi.com/api/email-reputation/tester)
-- Copy the key named as Primary Key.
-- Free tier allows 100 email validations per month.
-- You can upgrade to paid plans for additional requests.
-- Add the key to the Your API Key field when running the actor.
+The actor labels each email as one of these statuses:
 
-⚠️ If no key is provided, the actor will automatically use its own keys. Remember if actor ran out of
+- `valid`
+- `risky`
+- `invalid`
+- `unknown`
 
-api key credits you need to enter your own api key
+## 🎯 Typical use cases
 
-## ⚙️ Input Configuration
+### 🔎 Lead generation
 
-| Field | Type | Description | Default Example |
-| --- | --- | --- | --- |
-| `emails` | Array | Enter a list of email addresses to verify | `["test@gmail.com", "info@company.com"]` |
+Verify email lists collected from:
 
----
+- Google Maps scraping workflows
+- LinkedIn lead collection workflows
+- website contact extraction
+- business directory scraping
 
-## 🧩 Example Input
+### ✉️ Cold outreach
+
+Clean email lists before sending campaigns with tools such as:
+
+- Instantly
+- Lemlist
+- Mailshake
+- Smartlead
+- other outreach platforms
+
+### 🗂️ CRM and list cleanup
+
+Validate contacts before importing into:
+
+- HubSpot
+- Pipedrive
+- Salesforce
+- Airtable
+- internal sales databases
+
+### ⚙️ Automation workflows
+
+Use the actor inside:
+
+- Apify pipelines
+- n8n
+- Make
+- Zapier
+- custom API workflows
+
+## 📥 Input options
+
+You can provide email lists in several beginner-friendly ways:
+
+- Inline email array
+- CSV file available at a public URL
+- Raw CSV pasted directly into input
+- Apify Dataset from another actor
+- Apify Key-Value Store record
+
+Provide either `emails` or `source`, not both.
+
+## ⚡ Try it in 30 seconds
+
+Use this small test input to verify a few emails quickly:
 
 ```
 {
-  "emails": ["compiledcurious@gmail.com", "example@mycompany.com"]
-  "Your API Key(Optional)": "YOUR_ABSTRACT_API_KEY_HERE"
+  "emails": [
+    "contact@company.com",
+    "info@startup.io",
+    "hello@gmail.com"
+  ],
+  "mode": "mx",
+  "dedupe": true,
+  "checkDisposable": true,
+  "checkRoleAccounts": true,
+  "output": {
+    "format": "dataset",
+    "includeReasoning": true
+  },
+  "limits": {
+    "maxEmails": 10,
+    "concurrency": 5
+  }
 }
 ```
 
----
+This example is also available in examples/input-inline.json.
 
-## 📊 Example Output
+## 🧩 Example inputs
+
+The actor uses `mode: "mx"` for MX validation, `checkRoleAccounts` for role inbox detection, and `source` for CSV or dataset inputs. The examples below match the current input schema, so they can be pasted directly into the actor.
+
+### Example 1: Quick Email Check
+
+**Title**
+
+Quick Email Validation
+
+**Description**
+
+Verify a small list of emails before sending a campaign.
+
+**Input JSON**
 
 ```
-[
-  {
-    "email_address": "compiledcurious@gmail.com",
-    "success": true,
-    "summary": {
-      "status": "deliverable",
-      "score": "0.95",
-      "is_disposable": false,
-      "is_role": false,
-      "mx_records": [
-        "gmail-smtp-in.l.google.com",
-        "alt1.gmail-smtp-in.l.google.com",
-        "alt2.gmail-smtp-in.l.google.com",
-        "alt3.gmail-smtp-in.l.google.com",
-        "alt4.gmail-smtp-in.l.google.com"
-      ],
-      "domain": "gmail.com"
-    },
-    "raw": {
-      "email_deliverability": {
-        "status": "deliverable",
-        "status_detail": "valid_email",
-        "is_format_valid": true,
-        "is_smtp_valid": true,
-        "is_mx_valid": true,
-        "mx_records": [
-          "gmail-smtp-in.l.google.com",
-          "alt1.gmail-smtp-in.l.google.com",
-          "alt2.gmail-smtp-in.l.google.com",
-          "alt3.gmail-smtp-in.l.google.com",
-          "alt4.gmail-smtp-in.l.google.com"
-        ]
-      },
-      "email_quality": {
-        "score": "0.95",
-        "is_free_email": true,
-        "is_username_suspicious": false,
-        "is_disposable": false,
-        "is_catchall": false,
-        "is_subaddress": false,
-        "is_role": false,
-        "is_dmarc_enforced": true,
-        "is_spf_strict": false,
-        "minimum_age": null
-      },
-      "email_sender": {
-        "first_name": null,
-        "last_name": null,
-        "email_provider_name": "Google",
-        "organization_name": "Gmail",
-        "organization_type": "commercial"
-      },
-      "email_domain": {
-        "domain": "gmail.com",
-        "domain_age": 11044,
-        "is_live_site": true,
-        "registrar": "MarkMonitor Inc.",
-        "registrar_url": "https://markmonitor.com",
-        "date_registered": "1995-08-13",
-        "date_last_renewed": "2024-07-11",
-        "date_expires": "2025-08-12",
-        "is_risky_tld": false
-      },
-      "email_risk": {
-        "address_risk_status": "low",
-        "domain_risk_status": "low"
-      },
-      "email_breaches": {
-        "total_breaches": 0,
-        "date_first_breached": null,
-        "date_last_breached": null,
-        "breached_domains": []
-      }
-    }
+{
+  "emails": [
+    "contact@company.com",
+    "info@startup.io",
+    "hello@gmail.com"
+  ],
+  "mode": "mx",
+  "checkDisposable": true,
+  "checkRoleAccounts": true,
+  "output": {
+    "format": "dataset",
+    "includeReasoning": true
   }
-]
+}
 ```
 
----
+### Verify emails from CSV
 
-## 🧠 Features
+```
+{
+  "source": {
+    "type": "urlCsv",
+    "url": "https://example.com/leads.csv"
+  },
+  "mode": "mx",
+  "checkDisposable": true,
+  "checkRoleAccounts": true,
+  "output": {
+    "format": "dataset,csv",
+    "includeReasoning": true
+  }
+}
+```
 
-- 📧 Verify **single or multiple emails**
-- 🛡️ Checks **deliverability** (format, SMTP, MX)
-- 🔍 Provides **quality analysis** (free, disposable, catch-all, role)
-- 🏢 Extracts **sender info** (provider, organization, first/last name)
-- 🌐 Retrieves **domain details** (age, registrar, registration & expiry, TLD risk)
-- ⚠️ Risk & breach assessment for informed decisions
-- 📊 Returns **MX records** and **summary score**
+The Actor automatically uses the `email` column if it exists, or the first column otherwise.
 
----
+### Verify emails from another dataset
 
-## 💡 Use Cases
+```
+{
+  "source": {
+    "type": "apifyDataset",
+    "datasetId": "DATASET_ID"
+  },
+  "mode": "mx",
+  "checkDisposable": true,
+  "checkRoleAccounts": true,
+  "output": {
+    "format": "dataset,csv",
+    "includeReasoning": true
+  }
+}
+```
 
-- **Sales & Outreach:** Verify prospect email lists
-- **Marketing:** Ensure deliverable emails for campaigns
-- **Security:** Identify risky, disposable, or role-based addresses
-- **Data Enrichment:** Add email quality & domain info to datasets
+If the dataset contains an `email` field, the Actor uses it automatically. If not, it falls back to the first field in each item.
 
----
+## 📤 Example output
 
-## 🧑‍💻 Developer Info
+Each verified email is stored as one item in the default dataset.
 
-**Author:** [codescraper](mailto:codescraper011@gmail.com)
+```
+{
+  "email": "john@example.com",
+  "status": "valid",
+  "reasons": [],
+  "signals": {
+    "syntaxOk": true,
+    "mxOk": true,
+    "mxRecords": [
+      {
+        "exchange": "mail.example.com",
+        "priority": 10
+      }
+    ],
+    "isDisposable": false,
+    "isRole": false,
+    "isFreeProvider": false,
+    "domain": "example.com"
+  },
+  "timing": {
+    "normalize": 0,
+    "syntax": 0,
+    "mx": 42,
+    "heuristics": 1
+  },
+  "reasoning": "Syntax and MX OK; no risky signals."
+}
+```
 
----
+## 📊 Output fields
 
-## 🏷️ Tags
+| Field | Description |
+| --- | --- |
+| `email` | Normalized email address |
+| `status` | Final classification: `valid`, `risky`, `invalid`, or `unknown` |
+| `reasons` | Reason codes such as `invalid_syntax`, `no_mx`, `disposable_domain`, `role_account`, or `smtp_rejected` |
+| `signals` | Detailed machine-readable verification signals |
+| `timing` | Per-step timing information in milliseconds |
+| `reasoning` | Human-readable explanation when enabled |
 
-`bulk-email-verifier` . `email-verification` · `email-validation` . `email-scraper` · `data-validation` · `email-quality` · `risk-assessment` · `apify` · `automation`
+Results can be consumed from the default dataset and exported as JSON, CSV, Excel, or API responses.
+
+If you set `output.format` to `dataset,csv`, the Actor also saves `results.csv` to the default Key-Value Store. Every run also saves a `SUMMARY` record with aggregate counts and output settings.
+
+## 🛠️ Recommended setup
+
+For most use cases:
+
+- use `mode: "mx"`
+- keep `checkDisposable: true`
+- keep `checkRoleAccounts: true`
+- enable CSV output when you want a ready-to-import file
+
+`smtp` mode is experimental. If you use it, also set `enableSmtp: true`.
+
+## ▶️ How to use
+
+1. Open the Actor in Apify.
+2. Add emails directly or connect a source such as a CSV URL or dataset.
+3. Choose the verification mode. `mx` is the recommended default.
+4. Start the run.
+5. Review the dataset results and export or forward the contacts you want to keep.
+
+## Built for automation
+
+Bulk Email Verifier is designed to work well inside data pipelines.
+
+```
+Lead Scraper
+     ->
+Bulk Email Verifier
+     ->
+CRM / Outreach Tool
+```
+
+You can also send result batches to your own endpoint using the built-in webhook option.
+
+## 💰 Pricing
+
+The Actor uses Apify's consumption-based pricing, so cost depends on list size, concurrency, and DNS response times.
+
+Because the Actor does not rely on paid verification APIs, it is generally a low-cost option for bulk pre-verification and list cleaning.
+
+## 👥 Who should use this actor?
+
+This Actor is a practical fit for:
+
+- marketers
+- growth teams
+- lead generation agencies
+- sales operations teams
+- automation engineers
+- Apify users building scraper-to-CRM workflows
+
+## 🤝 Support
+
+If you need help or want to suggest improvements:
+
+- use the repository issue tracker
+- use the Actor Issues tab on Apify
+- send feature requests for new workflow integrations or output formats
+
+Feedback is welcome, especially from teams using the Actor in real lead generation and outreach pipelines.
